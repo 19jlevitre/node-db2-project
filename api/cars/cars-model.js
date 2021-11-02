@@ -1,5 +1,8 @@
-const getAll = () => {
-  // DO YOUR MAGIC
+const express = require('express');
+const db = require('../../data/db-config.js');
+const getAll = async () => {
+  const result = await db('cars')
+  return result
 }
 
 const getById = () => {
@@ -8,4 +11,10 @@ const getById = () => {
 
 const create = () => {
   // DO YOUR MAGIC
+}
+
+module.exports = {
+  getAll,
+  getById,
+  create,
 }

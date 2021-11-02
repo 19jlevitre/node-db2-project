@@ -5,6 +5,8 @@ return knex.schema.createTable('cars', table => {
 
   table.text('vin', 128).notNullable()
 
+  table.text('make', 128).notNullable()
+
   table.text('model', 128).notNullable()
 
   table.integer('mileage').notNullable()
