@@ -1,4 +1,5 @@
 const Cars = require('./cars-model.js');
+const vinValidator = require('vin-validator');
 const checkCarId = (req, res, next) => {
   Cars.getById(req.params.id)
   .then(possibleCar => {
@@ -18,7 +19,6 @@ const checkCarPayload = (req, res, next) => {
   const { vin, make, model, mileage } = req.body
   if(!vin) {
     res.status(400).json({ message: `vin is missing` })
-
   }else if(!make){
     res.status(400).json({ message: `make is missing` })
   }else if(!model){
@@ -32,11 +32,22 @@ const checkCarPayload = (req, res, next) => {
 }
 
 const checkVinNumberValid = (req, res, next) => {
-  // DO YOUR MAGIC
+  const {vin} = req.body
+  const validVin = vinValidator.validate(vin)
+  if(!validVin){
+    res.status(400).json({ message: `vin ${vin} is invalid` })
+  }else{
+    next()
+  }
 }
 
 const checkVinNumberUnique = (req, res, next) => {
-  // DO YOUR MAGIC
+  const {vin} = req.body
+  if(vin){
+    res.status(400).json({ message: `vin ${vin} already exists` })
+  }else{
+    next()
+  }
 }
 
-module.exports = {checkCarId, checkCarPayload}
+module.exports = {checkCarId, checkCarPayload, checkVinNumberValid, checkVinNumberUnique}
